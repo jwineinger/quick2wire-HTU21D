@@ -103,8 +103,7 @@ class HTU21D:
 
         raw_temp = int.from_bytes(raw_reading, byteorder="big")
         self.check_crc(raw_temp)
-        raw_temp = (raw_temp & 0xFFFC00) >> 8
-        return -46.85 + (175.72 * (raw_temp / float(2**16)))
+        return -46.85 + (175.72 * ((raw_temp >> 8) / float(2**16)))
 
     def get_rel_humidity(self):
         self.bus.transaction(i2c.writing_bytes(self.ADDR, self.CMD_READ_HUM_NOHOLD))
@@ -117,8 +116,7 @@ class HTU21D:
 
         raw_hum = int.from_bytes(raw_reading, byteorder="big")
         self.check_crc(raw_hum)
-        raw_hum = (raw_hum & 0xFFFC00) >> 8
-        return -6 + (125 * (raw_hum / float(2**16)))
+        return -6 + (125 * ((raw_hum >> 8) / float(2**16)))
 
 if __name__ == '__main__':
     sensor = HTU21D()
