@@ -37,6 +37,7 @@ class HTU21D:
         self.bus = i2c.I2CMaster()
         self.resolutions = self.get_resolutions()
         self.rh_timing, self.temp_timing = self.MEASURE_TIMES[self.resolutions]
+        
     def check_crc(self, sensor_val, debug=False):
         """
         Give this function the 2 byte message (measurement) and the check_value byte from the HTU21D
@@ -83,6 +84,7 @@ class HTU21D:
         )
         user_reg_int = int.from_bytes(user_reg[0], byteorder="big")
         return self.RESOLUTIONS[(user_reg_int >> 6) | (user_reg_int & 0x1)]
+        
     def get_temp(self):
         self.bus.transaction(i2c.writing_bytes(self.ADDR, self.CMD_READ_TEMP_NOHOLD))
         time.sleep(self.temp_timing)
