@@ -118,6 +118,7 @@ class HTU21D:
         self.check_crc(raw_hum)
         return -6 + (125 * ((raw_hum >> 8) / float(2**16)))
 
+
 if __name__ == '__main__':
     sensor = HTU21D()
     sensor.reset()
